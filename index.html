@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#1769ff" />
+  <title>PTCAD Email Hub</title>
+  <link rel="icon" href="assets/ptcad-logo.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="ambient ambient-one"></div>
+  <div class="ambient ambient-two"></div>
+
+  <div class="app-shell">
+    <aside class="sidebar glass-panel">
+      <div class="brand-block">
+        <div class="logo-wrap"><img src="assets/ptcad-logo.png" alt="PTCAD" /></div>
+        <div>
+          <p class="eyebrow">SALES ENABLEMENT</p>
+          <h1>PTCAD Email Hub</h1>
+        </div>
+      </div>
+
+      <div class="template-heading">
+        <span>เทมเพลตอีเมล</span>
+        <span class="count">11</span>
+      </div>
+
+      <nav id="templateList" class="template-list"></nav>
+
+      <div class="sidebar-note">
+        <span class="note-dot"></span>
+        <div>
+          <strong>V1 Workspace</strong>
+          <p>เทมเพลตแรกพร้อมใช้งาน ส่วนรายการอื่นเตรียมโครงไว้แล้ว</p>
+        </div>
+      </div>
+    </aside>
+
+    <main class="main-area">
+      <header class="topbar glass-panel">
+        <div>
+          <p class="eyebrow">EMAIL TEMPLATE GENERATOR</p>
+          <h2 id="pageTitle">แนะนำผลิตภัณฑ์ PTCAD</h2>
+          <p id="pageSubtitle">แก้ข้อมูลลูกค้าและเซลล์ ก่อนคัดลอกหรือ Export</p>
+        </div>
+        <div class="top-actions">
+          <button class="btn btn-ghost" id="resetBtn" type="button">รีเซ็ต</button>
+          <button class="btn btn-primary" id="exportBtn" type="button">Export HTML</button>
+        </div>
+      </header>
+
+      <section class="workspace-grid">
+        <div class="editor glass-panel">
+          <div class="section-title-row">
+            <div>
+              <span class="step-badge">01</span>
+              <h3>แก้ไขข้อมูล</h3>
+            </div>
+            <span class="autosave">บันทึกอัตโนมัติในเครื่อง</span>
+          </div>
+
+          <div class="form-grid">
+            <label class="field field-full">
+              <span>Subject</span>
+              <input id="subjectInput" type="text" />
+            </label>
+
+            <label class="field">
+              <span>ชื่อลูกค้า</span>
+              <input id="customerName" type="text" placeholder="เช่น คุณสมชาย" />
+            </label>
+
+            <label class="field">
+              <span>ชื่อเซลล์</span>
+              <input id="salesName" type="text" placeholder="เช่น คุณเอ" />
+            </label>
+
+            <label class="field field-full">
+              <span>บริษัทลูกค้า <small>(ไม่บังคับ)</small></span>
+              <input id="companyName" type="text" placeholder="เช่น บริษัท ABC จำกัด" />
+            </label>
+
+            <label class="field field-full">
+              <span>ลิงก์ทดลองใช้ฟรี 30 วัน</span>
+              <input id="trialLink" type="url" />
+            </label>
+
+            <label class="field field-full">
+              <span>ลิงก์ข้อมูลเพิ่มเติม</span>
+              <input id="infoLink" type="url" />
+            </label>
+          </div>
+
+          <div class="attachment-card">
+            <div class="attachment-icon">PDF</div>
+            <div>
+              <strong>Company Profile</strong>
+              <p>แนบไฟล์ Company Profile เวอร์ชันปัจจุบันในอีเมลก่อนส่ง</p>
+            </div>
+            <span class="manual-chip">แนบเอง</span>
+          </div>
+
+          <div class="editor-actions">
+            <button class="btn btn-soft" id="copySubjectBtn" type="button">Copy Subject</button>
+            <button class="btn btn-primary" id="copyEmailBtn" type="button">Copy Email</button>
+          </div>
+        </div>
+
+        <div class="preview-panel glass-panel">
+          <div class="section-title-row preview-title-row">
+            <div>
+              <span class="step-badge">02</span>
+              <h3>ตัวอย่างอีเมล</h3>
+            </div>
+            <div class="preview-tools">
+              <button class="icon-btn active" data-width="desktop" title="Desktop">▭</button>
+              <button class="icon-btn" data-width="mobile" title="Mobile">▯</button>
+            </div>
+          </div>
+
+          <div class="email-stage">
+            <div class="email-client-bar">
+              <span></span><span></span><span></span>
+              <div class="client-address">Preview · PTCAD Email</div>
+            </div>
+            <div id="emailViewport" class="email-viewport desktop">
+              <iframe id="emailPreview" title="Email preview"></iframe>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div id="toast" class="toast" role="status"></div>
+
+  <script src="templates.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
