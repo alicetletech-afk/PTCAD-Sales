@@ -53,35 +53,112 @@
 
   function setupTemplate() {
     values = {};
-    current.fields.forEach(field => values[field.key] = localStorage.getItem(`ptcad_${current.id}_${field.key}`) || field.default || '');
+    current.fields.forEach(field => {
+      const saved = localStorage.getItem(`ptcad_${current.id}_${field.key}`);
+      if (saved !== null) {
+        values[field.key] = field.type === 'checkbox' ? saved === 'true' : saved;
+      } else {
+        values[field.key] = field.default ?? (field.type === 'checkbox' ? false : '');
+      }
+    });
+
     currentCode.textContent = `${current.id} · ${current.stage}`;
     currentTitle.textContent = current.title;
-    refreshSubject();
     attachmentText.textContent = current.attachment || 'ไม่มีไฟล์แนบ';
     buildForm();
     buildList();
+    refreshSubject();
     refreshPreview();
+  }
+
+  function persistField(field, value) {
+    localStorage.setItem(`ptcad_${current.id}_${field.key}`, String(value));
   }
 
   function buildForm() {
     form.innerHTML = '';
+
     current.fields.forEach(field => {
       const wrap = document.createElement('div');
-      wrap.className = `field ${field.full ? 'full' : ''}`;
-      const label = document.createElement('label');
-      label.textContent = field.label;
-      const input = document.createElement('input');
-      input.type = 'text';
-      input.value = values[field.key];
-      input.addEventListener('input', e => {
-        values[field.key] = e.target.value;
-        localStorage.setItem(`ptcad_${current.id}_${field.key}`, e.target.value);
-        refreshSubject();
-        refreshPreview();
-      });
-      wrap.append(label, input);
+      wrap.className = `field ${field.full ? 'full' : ''} ${field.type === 'checkbox' ? 'checkbox-field' : ''}`;
+
+      if (field.type === 'checkbox') {
+        const label = document.createElement('label');
+        label.className = 'checkbox-label';
+
+        const input = document.createElement('input');
+        input.type = 'checkbox';
+        input.checked = Boolean(values[field.key]);
+
+        const visual = document.createElement('span');
+        visual.className = 'checkbox-visual';
+
+        const copy = document.createElement('span');
+        copy.className = 'checkbox-copy';
+        copy.textContent = field.label;
+
+        input.addEventListener('change', e => {
+          values[field.key] = e.target.checked;
+          persistField(field, values[field.key]);
+          handleFieldChange(field.key, values[field.key]);
+        });
+
+        label.append(input, visual, copy);
+        wrap.appendChild(label);
+      } else if (field.type === 'select') {
+        const label = document.createElement('label');
+        label.textContent = field.label;
+
+        const select = document.createElement('select');
+        (field.options || []).forEach(option => {
+          const item = document.createElement('option');
+          item.value = option.value;
+          item.textContent = option.label;
+          select.appendChild(item);
+        });
+        select.value = values[field.key];
+
+        select.addEventListener('change', e => {
+          values[field.key] = e.target.value;
+          persistField(field, values[field.key]);
+          handleFieldChange(field.key, values[field.key]);
+        });
+
+        wrap.append(label, select);
+      } else {
+        const label = document.createElement('label');
+        label.textContent = field.label;
+
+        const input = document.createElement('input');
+        input.type = field.type || 'text';
+        input.value = values[field.key];
+
+        input.addEventListener('input', e => {
+          values[field.key] = e.target.value;
+          persistField(field, values[field.key]);
+          handleFieldChange(field.key, values[field.key], false);
+        });
+
+        wrap.append(label, input);
+      }
+
       form.appendChild(wrap);
     });
+  }
+
+  function handleFieldChange(key, value, rebuild = true) {
+    if (typeof current.onFieldChange === 'function') {
+      const updatedValues = current.onFieldChange(key, value, {...values});
+      if (updatedValues && typeof updatedValues === 'object') {
+        values = updatedValues;
+        current.fields.forEach(field => persistField(field, values[field.key]));
+        rebuild = true;
+      }
+    }
+
+    refreshSubject();
+    refreshPreview();
+    if (rebuild) buildForm();
   }
 
   function refreshPreview() {
@@ -116,7 +193,9 @@
       const blobHtml = new Blob([renderedHtml], {type: 'text/html'});
       const doc = new DOMParser().parseFromString(renderedHtml, 'text/html');
       const blobText = new Blob([doc.body.innerText], {type: 'text/plain'});
-      await navigator.clipboard.write([new ClipboardItem({'text/html': blobHtml, 'text/plain': blobText})]);
+      await navigator.clipboard.write([
+        new ClipboardItem({'text/html': blobHtml, 'text/plain': blobText})
+      ]);
       showToast('คัดลอกอีเมลแบบจัดรูปแบบแล้ว');
     } catch {
       await copyText(renderedHtml, 'คัดลอก HTML แล้ว');
@@ -134,14 +213,18 @@
     showToast('ดาวน์โหลดไฟล์ HTML แล้ว');
   }
 
-  document.getElementById('copySubjectBtn').addEventListener('click', () => copyText(subjectInput.value, 'คัดลอก Subject แล้ว'));
+  document.getElementById('copySubjectBtn')
+    .addEventListener('click', () => copyText(subjectInput.value, 'คัดลอก Subject แล้ว'));
+
   document.getElementById('copyEmailBtn').addEventListener('click', copyRichEmail);
   document.getElementById('downloadBtn').addEventListener('click', downloadHtml);
+
   document.getElementById('resetBtn').addEventListener('click', () => {
     current.fields.forEach(field => localStorage.removeItem(`ptcad_${current.id}_${field.key}`));
     setupTemplate();
     showToast('คืนค่าเริ่มต้นแล้ว');
   });
+
   document.querySelectorAll('.device-button').forEach(btn => btn.addEventListener('click', () => {
     document.querySelectorAll('.device-button').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
