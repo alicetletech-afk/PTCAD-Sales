@@ -1,24 +1,23 @@
-PTCAD E04 Smart Information Request
+PTCAD E05 — Order Status Builder
 
-ไฟล์ในชุดนี้:
-- app.js
-- templates/E04.js
-- style-additions.css
+ไฟล์ที่ต้องอัปทับ:
+1. app.js
+2. style.css
+3. templates/E05.js
+
+ฟังก์ชัน:
+- Dynamic Subject
+- Dropdown เลือกสถานะคำสั่งซื้อ
+- Order Detail Card
+- Timeline เปลี่ยนตามสถานะ
+- ปุ่ม LINE OA แสดงเมื่อกรอกลิงก์
+- ไม่มีคำว่า “ขอแสดงความนับถือ”
 
 วิธีติดตั้ง:
-1. อัปโหลด app.js ทับไฟล์เดิม
-2. อัปโหลด templates/E04.js ทับไฟล์เดิม
-3. เปิด style.css เดิม แล้วนำข้อความทั้งหมดใน style-additions.css ไปวางต่อท้ายไฟล์
-4. รอ GitHub Pages deploy
-5. Hard Refresh หน้าเว็บ
+1. แตก ZIP
+2. อัปโหลดไฟล์ทั้งหมดไปทับไฟล์เดิมใน GitHub
+3. รอ GitHub Pages deploy
+4. Hard Refresh
 
 Mac: Command + Shift + R
 Windows: Ctrl + Shift + R
-
-E04 รองรับ:
-- Preset ข้อมูลออกใบกำกับภาษี
-- Preset เปิดคำสั่งซื้อ
-- Preset จัดส่ง License
-- เลือกรายการด้วย Checkbox
-- Preview แสดงเฉพาะรายการที่เลือก
-- ปุ่ม LINE OA จะแสดงเมื่อกรอกลิงก์
