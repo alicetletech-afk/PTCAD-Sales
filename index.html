@@ -3,8 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#1957d2" />
+  <meta name="theme-color" content="#edf6ff" />
   <title>PTCAD Email Hub</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Noto+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="icon" href="assets/images/ptcad-logo.png" />
   <link rel="stylesheet" href="style.css" />
 </head>
@@ -12,96 +15,97 @@
   <div class="ambient ambient-one"></div>
   <div class="ambient ambient-two"></div>
 
-  <main class="app-shell">
-    <aside class="sidebar glass-card">
+  <div class="app-shell">
+    <aside class="sidebar glass-panel">
       <div class="brand-block">
         <img src="assets/images/ptcad-logo.png" alt="PTCAD" class="brand-logo" />
         <div>
-          <p class="eyebrow">Sales Enablement</p>
-          <h1>PTCAD Email Hub</h1>
+          <h1><span class="en">PTCAD</span> Email Hub</h1>
+          <p>เทมเพลตอีเมลสำหรับทีมขาย</p>
         </div>
       </div>
 
-      <div class="journey-label">Customer Journey</div>
+      <div class="sidebar-label">Customer journey</div>
       <nav id="templateList" class="template-list" aria-label="Email templates"></nav>
-
-      <div class="sidebar-note">
-        <span class="note-icon" aria-hidden="true">
-          <svg viewBox="0 0 24 24"><path d="M12 3 4 6v5c0 5.25 3.4 8.9 8 10 4.6-1.1 8-4.75 8-10V6l-8-3Z"/><path d="m9 12 2 2 4-4"/></svg>
-        </span>
-        <div>
-          <strong>พร้อมใช้กับ GitHub Pages</strong>
-          <p>เปิดใช้งาน E01 แล้ว ส่วน E02–E11 เตรียมไฟล์ไว้สำหรับเติมเนื้อหาต่อ</p>
-        </div>
-      </div>
     </aside>
 
-    <section class="workspace">
-      <header class="topbar glass-card">
+    <main class="workspace">
+      <header class="topbar glass-panel">
         <div>
-          <p class="eyebrow">Email Template Generator</p>
-          <h2 id="pageTitle">E01 · แนะนำผลิตภัณฑ์ PTCAD</h2>
+          <div class="eyebrow" id="currentCode">E01 · PRE-SALES</div>
+          <h2 id="currentTitle">แนะนำผลิตภัณฑ์ PTCAD</h2>
         </div>
-        <div class="status-pill"><span></span>พร้อมใช้งาน</div>
+        <div class="top-actions">
+          <button class="icon-button" id="resetBtn" type="button" title="คืนค่าเริ่มต้น" aria-label="คืนค่าเริ่มต้น">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>
+          </button>
+        </div>
       </header>
 
       <section class="editor-grid">
-        <div class="control-panel glass-card">
+        <section class="control-panel glass-panel">
           <div class="section-heading">
             <div>
-              <p class="eyebrow">Personalize</p>
-              <h3>แก้ข้อมูลก่อนส่ง</h3>
+              <span class="step-index">01</span>
+              <h3>แก้ไขข้อมูลก่อนส่ง</h3>
             </div>
+            <p>ข้อมูลจะเปลี่ยนในตัวอย่างอีเมลทันที</p>
           </div>
 
-          <div id="dynamicFields" class="form-grid"></div>
+          <div class="form-grid" id="dynamicForm"></div>
 
-          <div class="field-group full-width">
-            <label for="subjectInput">หัวข้ออีเมล</label>
-            <input id="subjectInput" type="text" />
-          </div>
-
-          <div class="action-grid">
-            <button id="copySubjectBtn" class="button button-secondary" type="button">
-              <span class="button-icon"><svg viewBox="0 0 24 24"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></span>
-              Copy Subject
-            </button>
-            <button id="copyEmailBtn" class="button button-primary" type="button">
-              <span class="button-icon"><svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><path d="m4 7 8 5 8-5"/></svg></span>
-              Copy Email
-            </button>
-            <button id="exportBtn" class="button button-ghost" type="button">
-              <span class="button-icon"><svg viewBox="0 0 24 24"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg></span>
-              Export HTML
-            </button>
+          <div class="subject-box">
+            <label for="subjectInput">Subject</label>
+            <div class="copy-row">
+              <input id="subjectInput" type="text" />
+              <button class="small-button" id="copySubjectBtn" type="button">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                Copy
+              </button>
+            </div>
           </div>
 
           <div class="attachment-note">
-            <span class="note-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24"><path d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
-            </span>
-            <div><strong>ไฟล์แนบเริ่มต้น</strong><p id="attachmentText">Company Profile (PDF)</p></div>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
+            <div>
+              <strong>ไฟล์แนบ</strong>
+              <span id="attachmentText">Company Profile (PDF)</span>
+            </div>
           </div>
-        </div>
 
-        <div class="preview-panel glass-card">
+          <div class="action-stack">
+            <button class="primary-action" id="copyEmailBtn" type="button">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+              Copy Email
+            </button>
+            <button class="secondary-action" id="downloadBtn" type="button">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg>
+              Export HTML
+            </button>
+          </div>
+        </section>
+
+        <section class="preview-panel glass-panel">
           <div class="preview-toolbar">
             <div>
-              <p class="eyebrow">Live Preview</p>
-              <h3>ตัวอย่างอีเมล</h3>
+              <span class="step-index">02</span>
+              <h3>Email Preview</h3>
             </div>
-            <div class="device-switch" aria-label="Preview size">
-              <button class="device-button active" data-width="desktop" type="button">Desktop</button>
-              <button class="device-button" data-width="mobile" type="button">Mobile</button>
+            <div class="device-toggle" role="group" aria-label="Preview size">
+              <button class="device-button active" data-view="desktop" type="button">Desktop</button>
+              <button class="device-button" data-view="mobile" type="button">Mobile</button>
             </div>
           </div>
+
           <div class="preview-stage">
-            <iframe id="emailPreview" title="Email preview"></iframe>
+            <div id="emailViewport" class="email-viewport desktop">
+              <iframe id="emailPreview" title="Email preview"></iframe>
+            </div>
           </div>
-        </div>
+        </section>
       </section>
-    </section>
-  </main>
+    </main>
+  </div>
 
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
 

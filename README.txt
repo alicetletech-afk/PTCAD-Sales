@@ -1,21 +1,25 @@
-PTCAD EMAIL HUB — GitHub Pages Ready
+PTCAD EMAIL HUB — GITHUB READY
 
-วิธีอัปขึ้น GitHub
-1. แตกไฟล์ ZIP
-2. เปิด Repository ที่ต้องการ
-3. ลากไฟล์และโฟลเดอร์ทั้งหมดภายใน PTCAD-Email-Hub-GitHub-V1 ขึ้นไปที่ Root ของ Repository
-4. Commit changes
-5. ไปที่ Settings > Pages
-6. Source: Deploy from a branch
-7. Branch: main / root แล้วกด Save
+วิธีขึ้น GitHub Pages
+1) แตกไฟล์ ZIP
+2) ลากไฟล์และโฟลเดอร์ทั้งหมดภายในโฟลเดอร์นี้ขึ้น Repository
+3) ไปที่ Settings > Pages
+4) เลือก Deploy from a branch > main / root
+5) กด Save
 
-ไฟล์เทมเพลต
-- templates/E01.js พร้อมใช้งานแล้ว
-- templates/E02.js ถึง E11.js เป็นโครงรอเติมเนื้อหา
+โครงสร้าง Template
+- templates/E01.js พร้อมใช้งานจริง
+- templates/E02.js ถึง E11.js แยกไฟล์ไว้สำหรับเพิ่มเนื้อหาภายหลัง
 
-การแก้โลโก้
-- แทนที่ไฟล์ assets/images/ptcad-logo.png โดยใช้ชื่อเดิม
+รูปภาพ
+- assets/images/ptcad-logo.png
 
-หมายเหตุเรื่องรูปในอีเมล
-- Preview ในเว็บจะแสดงโลโก้จาก path ภายในโปรเจกต์
-- เมื่อนำ HTML ไปส่งจริงผ่านบางระบบ อาจต้องเปลี่ยน URL รูปเป็น URL แบบ public บน GitHub Pages หรือเว็บไซต์หลัก เพื่อให้ผู้รับเห็นรูปได้ครบ
+ฟอนต์
+- ภาษาอังกฤษ: Poppins
+- ภาษาไทย: DB Heavent (ใช้ local font ถ้ามีติดตั้งในเครื่อง)
+- หากเครื่องไม่มี DB Heavent ระบบจะใช้ Noto Sans Thai เป็น fallback
+- ไม่มีการแนบหรือแจกไฟล์ฟอนต์ภายในโปรเจกต์
+
+หมายเหตุ Email
+- ก่อนส่ง E01 ให้แนบ Company Profile PDF
+- ปุ่ม Copy Email จะพยายามคัดลอกแบบ Rich HTML เพื่อวางใน Gmail/Outlook

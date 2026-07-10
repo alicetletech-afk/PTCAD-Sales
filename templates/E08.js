@@ -1,14 +1,12 @@
-window.PTCAD_TEMPLATES = window.PTCAD_TEMPLATES || {};
-window.PTCAD_TEMPLATES.E08 = {
+window.PTCAD_TEMPLATES = window.PTCAD_TEMPLATES || [];
+window.PTCAD_TEMPLATES.push({
   id: "E08",
-  journey: "Renewal",
-  title: "แจ้งเตือนต่ออายุล่วงหน้า 30 วัน",
+  stage: "RENEWAL",
+  title: "แจ้งเตือนล่วงหน้า 30 วัน",
   shortTitle: "Renewal 30 Days",
-  subject: "PTCAD | แจ้งเตือนต่ออายุล่วงหน้า 30 วัน",
-  status: "draft",
-  attachments: [],
+  active: false,
+  subject: "",
+  attachment: "",
   fields: [],
-  buildEmail() {
-    return "";
-  }
-};
+  render() { return ""; }
+});

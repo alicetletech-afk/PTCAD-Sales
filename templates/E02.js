@@ -1,14 +1,12 @@
-window.PTCAD_TEMPLATES = window.PTCAD_TEMPLATES || {};
-window.PTCAD_TEMPLATES.E02 = {
+window.PTCAD_TEMPLATES = window.PTCAD_TEMPLATES || [];
+window.PTCAD_TEMPLATES.push({
   id: "E02",
-  journey: "Pre-Sales",
+  stage: "PRE-SALES",
   title: "ส่งใบเสนอราคา",
   shortTitle: "Quotation",
-  subject: "PTCAD | ส่งใบเสนอราคา",
-  status: "draft",
-  attachments: [],
+  active: false,
+  subject: "",
+  attachment: "",
   fields: [],
-  buildEmail() {
-    return "";
-  }
-};
+  render() { return ""; }
+});

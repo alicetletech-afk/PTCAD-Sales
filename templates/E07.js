@@ -1,14 +1,12 @@
-window.PTCAD_TEMPLATES = window.PTCAD_TEMPLATES || {};
-window.PTCAD_TEMPLATES.E07 = {
+window.PTCAD_TEMPLATES = window.PTCAD_TEMPLATES || [];
+window.PTCAD_TEMPLATES.push({
   id: "E07",
-  journey: "Delivery",
+  stage: "DELIVERY",
   title: "ส่ง License และข้อมูลการใช้งาน",
   shortTitle: "License Delivery",
-  subject: "PTCAD | ส่ง License และข้อมูลการใช้งาน",
-  status: "draft",
-  attachments: [],
+  active: false,
+  subject: "",
+  attachment: "",
   fields: [],
-  buildEmail() {
-    return "";
-  }
-};
+  render() { return ""; }
+});

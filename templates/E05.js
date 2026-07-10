@@ -1,14 +1,12 @@
-window.PTCAD_TEMPLATES = window.PTCAD_TEMPLATES || {};
-window.PTCAD_TEMPLATES.E05 = {
+window.PTCAD_TEMPLATES = window.PTCAD_TEMPLATES || [];
+window.PTCAD_TEMPLATES.push({
   id: "E05",
-  journey: "Order",
+  stage: "ORDER",
   title: "ยืนยันการได้รับคำสั่งซื้อ",
   shortTitle: "Order Confirmation",
-  subject: "PTCAD | ยืนยันการได้รับคำสั่งซื้อ",
-  status: "draft",
-  attachments: [],
+  active: false,
+  subject: "",
+  attachment: "",
   fields: [],
-  buildEmail() {
-    return "";
-  }
-};
+  render() { return ""; }
+});

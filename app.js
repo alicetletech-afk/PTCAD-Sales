@@ -1,131 +1,139 @@
 (() => {
-  const templates = window.PTCAD_TEMPLATES || {};
-  let activeId = "E01";
-  let activeValues = {};
-  let latestEmailHtml = "";
+  const templates = (window.PTCAD_TEMPLATES || []).sort((a,b) => a.id.localeCompare(b.id));
+  let current = templates.find(t => t.active) || templates[0];
+  let values = {};
+  let renderedHtml = "";
 
-  const listEl = document.getElementById("templateList");
-  const fieldsEl = document.getElementById("dynamicFields");
-  const subjectInput = document.getElementById("subjectInput");
-  const preview = document.getElementById("emailPreview");
-  const titleEl = document.getElementById("pageTitle");
-  const attachmentText = document.getElementById("attachmentText");
-  const toast = document.getElementById("toast");
+  const list = document.getElementById('templateList');
+  const form = document.getElementById('dynamicForm');
+  const subjectInput = document.getElementById('subjectInput');
+  const preview = document.getElementById('emailPreview');
+  const currentCode = document.getElementById('currentCode');
+  const currentTitle = document.getElementById('currentTitle');
+  const attachmentText = document.getElementById('attachmentText');
+  const toast = document.getElementById('toast');
 
-  const orderedIds = Object.keys(templates).sort();
-
-  function renderTemplateList() {
-    listEl.innerHTML = orderedIds.map(id => {
-      const t = templates[id];
-      const ready = t.status === "ready";
-      return `
-        <button class="template-item ${id === activeId ? "active" : ""} ${ready ? "" : "disabled"}" data-id="${id}" type="button">
-          <span class="template-code">${id}</span>
-          <span class="template-copy"><strong>${t.title}</strong><span>${t.shortTitle}</span></span>
-          <span class="template-dot"></span>
-        </button>`;
-    }).join("");
-
-    listEl.querySelectorAll(".template-item").forEach(btn => {
-      btn.addEventListener("click", () => {
-        const id = btn.dataset.id;
-        if (templates[id].status !== "ready") {
-          showToast(`${id} เตรียมไฟล์ไว้แล้ว รอเติมเนื้อหา`);
-          return;
-        }
-        activeId = id;
-        loadTemplate();
-      });
+  function buildList() {
+    list.innerHTML = '';
+    templates.forEach(template => {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = `template-item ${template.id === current.id ? 'active' : ''}`;
+      button.disabled = !template.active;
+      button.innerHTML = `
+        <span class="template-code">${template.id}</span>
+        <span class="template-copy">
+          <strong>${template.title}</strong>
+          <span>${template.shortTitle}</span>
+        </span>`;
+      if (template.active) button.addEventListener('click', () => selectTemplate(template.id));
+      list.appendChild(button);
     });
   }
 
-  function loadTemplate() {
-    const t = templates[activeId];
-    activeValues = Object.fromEntries((t.fields || []).map(field => [field.key, localStorage.getItem(`ptcad-${activeId}-${field.key}`) || field.defaultValue || ""]));
-    subjectInput.value = localStorage.getItem(`ptcad-${activeId}-subject`) || t.subject;
-    titleEl.textContent = `${t.id} · ${t.title}`;
-    attachmentText.textContent = t.attachments?.length ? t.attachments.join(", ") : "ไม่มีไฟล์แนบเริ่มต้น";
-    renderFields(t);
-    renderTemplateList();
-    updatePreview();
+  function selectTemplate(id) {
+    const next = templates.find(t => t.id === id && t.active);
+    if (!next) return;
+    current = next;
+    setupTemplate();
   }
 
-  function renderFields(t) {
-    fieldsEl.innerHTML = (t.fields || []).map(field => `
-      <div class="field-group ${field.fullWidth ? "full-width" : ""}">
-        <label for="field-${field.key}">${field.label}</label>
-        <input id="field-${field.key}" data-key="${field.key}" type="text" value="${escapeAttribute(activeValues[field.key])}">
-      </div>`).join("");
+  function setupTemplate() {
+    values = {};
+    current.fields.forEach(field => values[field.key] = localStorage.getItem(`ptcad_${current.id}_${field.key}`) || field.default || '');
+    currentCode.textContent = `${current.id} · ${current.stage}`;
+    currentTitle.textContent = current.title;
+    subjectInput.value = current.subject;
+    attachmentText.textContent = current.attachment || 'ไม่มีไฟล์แนบ';
+    buildForm();
+    buildList();
+    refreshPreview();
+  }
 
-    fieldsEl.querySelectorAll("input").forEach(input => {
-      input.addEventListener("input", () => {
-        activeValues[input.dataset.key] = input.value;
-        localStorage.setItem(`ptcad-${activeId}-${input.dataset.key}`, input.value);
-        updatePreview();
+  function buildForm() {
+    form.innerHTML = '';
+    current.fields.forEach(field => {
+      const wrap = document.createElement('div');
+      wrap.className = `field ${field.full ? 'full' : ''}`;
+      const label = document.createElement('label');
+      label.textContent = field.label;
+      const input = document.createElement('input');
+      input.type = 'text';
+      input.value = values[field.key];
+      input.addEventListener('input', e => {
+        values[field.key] = e.target.value;
+        localStorage.setItem(`ptcad_${current.id}_${field.key}`, e.target.value);
+        refreshPreview();
       });
+      wrap.append(label, input);
+      form.appendChild(wrap);
     });
   }
 
-  function updatePreview() {
-    const t = templates[activeId];
-    latestEmailHtml = t.buildEmail(activeValues);
-    preview.srcdoc = latestEmailHtml;
-  }
-
-  function escapeAttribute(value) {
-    return String(value ?? "").replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  function refreshPreview() {
+    renderedHtml = current.render(values);
+    preview.srcdoc = renderedHtml;
   }
 
   function showToast(message) {
     toast.textContent = message;
-    toast.classList.add("show");
+    toast.classList.add('show');
     clearTimeout(showToast.timer);
-    showToast.timer = setTimeout(() => toast.classList.remove("show"), 2200);
+    showToast.timer = setTimeout(() => toast.classList.remove('show'), 2100);
   }
 
-  subjectInput.addEventListener("input", () => {
-    localStorage.setItem(`ptcad-${activeId}-subject`, subjectInput.value);
-  });
-
-  document.getElementById("copySubjectBtn").addEventListener("click", async () => {
-    await navigator.clipboard.writeText(subjectInput.value);
-    showToast("คัดลอกหัวข้ออีเมลแล้ว");
-  });
-
-  document.getElementById("copyEmailBtn").addEventListener("click", async () => {
+  async function copyText(text, success) {
     try {
-      const plainText = preview.contentDocument?.body?.innerText || "";
-      const item = new ClipboardItem({
-        "text/html": new Blob([latestEmailHtml], { type: "text/html" }),
-        "text/plain": new Blob([plainText], { type: "text/plain" })
-      });
-      await navigator.clipboard.write([item]);
-      showToast("คัดลอกอีเมลแบบจัดรูปแบบแล้ว");
-    } catch (error) {
-      await navigator.clipboard.writeText(preview.contentDocument?.body?.innerText || "");
-      showToast("คัดลอกข้อความอีเมลแล้ว");
+      await navigator.clipboard.writeText(text);
+      showToast(success);
+    } catch {
+      const area = document.createElement('textarea');
+      area.value = text;
+      document.body.appendChild(area);
+      area.select();
+      document.execCommand('copy');
+      area.remove();
+      showToast(success);
     }
-  });
+  }
 
-  document.getElementById("exportBtn").addEventListener("click", () => {
-    const blob = new Blob([latestEmailHtml], { type: "text/html;charset=utf-8" });
-    const link = document.createElement("a");
-    link.href = URL.createObjectURL(blob);
-    link.download = `${activeId}-PTCAD-email.html`;
-    document.body.appendChild(link);
-    link.click();
-    link.remove();
-    URL.revokeObjectURL(link.href);
-    showToast("Export HTML เรียบร้อย");
-  });
+  async function copyRichEmail() {
+    try {
+      const blobHtml = new Blob([renderedHtml], {type: 'text/html'});
+      const doc = new DOMParser().parseFromString(renderedHtml, 'text/html');
+      const blobText = new Blob([doc.body.innerText], {type: 'text/plain'});
+      await navigator.clipboard.write([new ClipboardItem({'text/html': blobHtml, 'text/plain': blobText})]);
+      showToast('คัดลอกอีเมลแบบจัดรูปแบบแล้ว');
+    } catch {
+      await copyText(renderedHtml, 'คัดลอก HTML แล้ว');
+    }
+  }
 
-  document.querySelectorAll(".device-button").forEach(button => {
-    button.addEventListener("click", () => {
-      document.querySelectorAll(".device-button").forEach(btn => btn.classList.remove("active"));
-      button.classList.add("active");
-      preview.classList.toggle("mobile", button.dataset.width === "mobile");
-    });
-  });
+  function downloadHtml() {
+    const blob = new Blob([renderedHtml], {type: 'text/html;charset=utf-8'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${current.id}-PTCAD-email.html`;
+    a.click();
+    URL.revokeObjectURL(url);
+    showToast('ดาวน์โหลดไฟล์ HTML แล้ว');
+  }
 
-  loadTemplate();
+  document.getElementById('copySubjectBtn').addEventListener('click', () => copyText(subjectInput.value, 'คัดลอก Subject แล้ว'));
+  document.getElementById('copyEmailBtn').addEventListener('click', copyRichEmail);
+  document.getElementById('downloadBtn').addEventListener('click', downloadHtml);
+  document.getElementById('resetBtn').addEventListener('click', () => {
+    current.fields.forEach(field => localStorage.removeItem(`ptcad_${current.id}_${field.key}`));
+    setupTemplate();
+    showToast('คืนค่าเริ่มต้นแล้ว');
+  });
+  document.querySelectorAll('.device-button').forEach(btn => btn.addEventListener('click', () => {
+    document.querySelectorAll('.device-button').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const viewport = document.getElementById('emailViewport');
+    viewport.className = `email-viewport ${btn.dataset.view}`;
+  }));
+
+  setupTemplate();
 })();

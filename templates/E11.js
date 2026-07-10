@@ -1,14 +1,12 @@
-window.PTCAD_TEMPLATES = window.PTCAD_TEMPLATES || {};
-window.PTCAD_TEMPLATES.E11 = {
+window.PTCAD_TEMPLATES = window.PTCAD_TEMPLATES || [];
+window.PTCAD_TEMPLATES.push({
   id: "E11",
-  journey: "Renewal",
+  stage: "RENEWAL",
   title: "ส่งใบเสนอราคาต่ออายุ",
   shortTitle: "Renewal Quotation",
-  subject: "PTCAD | ส่งใบเสนอราคาต่ออายุ",
-  status: "draft",
-  attachments: [],
+  active: false,
+  subject: "",
+  attachment: "",
   fields: [],
-  buildEmail() {
-    return "";
-  }
-};
+  render() { return ""; }
+});

@@ -1,14 +1,12 @@
-window.PTCAD_TEMPLATES = window.PTCAD_TEMPLATES || {};
-window.PTCAD_TEMPLATES.E10 = {
+window.PTCAD_TEMPLATES = window.PTCAD_TEMPLATES || [];
+window.PTCAD_TEMPLATES.push({
   id: "E10",
-  journey: "Renewal",
-  title: "แจ้งสถานะ License หมดอายุ",
+  stage: "RENEWAL",
+  title: "แจ้ง License หมดอายุ",
   shortTitle: "License Expired",
-  subject: "PTCAD | แจ้งสถานะ License หมดอายุ",
-  status: "draft",
-  attachments: [],
+  active: false,
+  subject: "",
+  attachment: "",
   fields: [],
-  buildEmail() {
-    return "";
-  }
-};
+  render() { return ""; }
+});
