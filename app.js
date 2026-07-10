@@ -13,6 +13,19 @@
   const attachmentText = document.getElementById('attachmentText');
   const toast = document.getElementById('toast');
 
+  function renderSubject(template, data) {
+    return String(template || '').replace(/\{\{(\w+)\}\}/g, (_, key) => {
+      const value = data[key];
+      return value !== undefined && value !== null && String(value).trim() !== ''
+        ? String(value)
+        : '';
+    });
+  }
+
+  function refreshSubject() {
+    subjectInput.value = renderSubject(current.subject, values);
+  }
+
   function buildList() {
     list.innerHTML = '';
     templates.forEach(template => {
@@ -43,7 +56,7 @@
     current.fields.forEach(field => values[field.key] = localStorage.getItem(`ptcad_${current.id}_${field.key}`) || field.default || '');
     currentCode.textContent = `${current.id} · ${current.stage}`;
     currentTitle.textContent = current.title;
-    subjectInput.value = current.subject;
+    refreshSubject();
     attachmentText.textContent = current.attachment || 'ไม่มีไฟล์แนบ';
     buildForm();
     buildList();
@@ -63,6 +76,7 @@
       input.addEventListener('input', e => {
         values[field.key] = e.target.value;
         localStorage.setItem(`ptcad_${current.id}_${field.key}`, e.target.value);
+        refreshSubject();
         refreshPreview();
       });
       wrap.append(label, input);
