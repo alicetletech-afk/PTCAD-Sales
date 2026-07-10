@@ -1,9 +1,17 @@
-PTCAD E02 Compatible Update
+อัปเดต E03 Final Fix
 
-วิธีใช้
-1. แตกไฟล์ ZIP
-2. นำโฟลเดอร์ templates ไปอัปทับใน Repository เดิม
-3. ตรวจสอบว่าไฟล์อยู่ที่ templates/E02.js
-4. รอ GitHub Pages deploy แล้ว Refresh หน้าเว็บ
+ไฟล์ที่ต้องอัปทับ:
+- templates/E03.js
+- style.css
 
-ไม่ต้องแก้ index.html หรือ app.js
+แก้ไข:
+- ตัวแปรชื่อ/บริษัท/วันที่แสดงผลถูกต้อง
+- Subject แสดงได้เต็มและย่อในเลย์เอาต์ได้ถูกต้อง
+- เพิ่มการ์ดช่วยเหลือ
+- เพิ่ม CTA นัด Demo และ LINE OA
+- LINE OA จะโชว์เมื่อกรอก URL ในช่องลิงก์ LINE OA
+- ไม่มีคำว่า “ขอแสดงความนับถือ”
+
+หลังอัปโหลด รอ GitHub Pages deploy แล้ว Hard Refresh
+Mac: Command + Shift + R
+Windows: Ctrl + Shift + R

@@ -128,3 +128,6 @@ h3 { margin: 0; font-size: 21px; }
   .preview-stage { padding: 10px; }
   .email-viewport.mobile, .email-viewport.desktop { width: 100%; }
 }
+
+/* Subject field layout fix */
+.copy-row input { flex: 1; min-width: 0; }
