@@ -14,9 +14,35 @@ window.PTCAD_TEMPLATES.push({
     { key: "CompanyName", label: "ชื่อบริษัทลูกค้า", default: "บริษัทของท่าน", full: false },
     { key: "QuotationNo", label: "เลขที่ใบเสนอราคา", default: "PAP-QXXXXX", full: false },
     { key: "OrderNo", label: "เลขที่คำสั่งซื้อ / PO", default: "-", full: false },
-    { key: "ProductName", label: "ผลิตภัณฑ์", default: "PTCAD Standard", full: false },
-    { key: "LicenseType", label: "ประเภท License", default: "Subscription 1 ปี", full: false },
+
+    {
+      key: "ProductName",
+      label: "ผลิตภัณฑ์",
+      type: "select",
+      default: "PTCAD Standard",
+      full: false,
+      options: [
+        { value: "PTCAD Lite", label: "PTCAD Lite" },
+        { value: "PTCAD Standard", label: "PTCAD Standard" },
+        { value: "PTCAD Plus", label: "PTCAD Plus" }
+      ]
+    },
+
+    {
+      key: "LicenseType",
+      label: "ประเภท License",
+      type: "select",
+      default: "Subscription License",
+      full: false,
+      options: [
+        { value: "Subscription License", label: "Subscription License" },
+        { value: "Perpetual License (ซื้อขาด)", label: "Perpetual License (ซื้อขาด)" },
+        { value: "Network License", label: "Network License" }
+      ]
+    },
+
     { key: "Quantity", label: "จำนวน License", default: "1 License", full: false },
+
     {
       key: "OrderStatus",
       label: "สถานะคำสั่งซื้อ",
@@ -32,6 +58,7 @@ window.PTCAD_TEMPLATES.push({
         { value: "delivered", label: "จัดส่ง License แล้ว" }
       ]
     },
+
     { key: "SalesName", label: "ชื่อเซลล์", default: "เจ้าหน้าที่ฝ่ายขาย", full: true },
     { key: "LineUrl", label: "ลิงก์ LINE Official Account", default: "", full: true }
   ],
@@ -43,7 +70,7 @@ window.PTCAD_TEMPLATES.push({
       QuotationNo: values.QuotationNo || "PAP-QXXXXX",
       OrderNo: values.OrderNo || "-",
       ProductName: values.ProductName || "PTCAD Standard",
-      LicenseType: values.LicenseType || "Subscription 1 ปี",
+      LicenseType: values.LicenseType || "Subscription License",
       Quantity: values.Quantity || "1 License",
       OrderStatus: values.OrderStatus || "received",
       SalesName: values.SalesName || "เจ้าหน้าที่ฝ่ายขาย",

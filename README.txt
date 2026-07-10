@@ -1,23 +1,13 @@
-PTCAD E05 — Order Status Builder
+PTCAD E05 Dropdown Update
 
-ไฟล์ที่ต้องอัปทับ:
-1. app.js
-2. style.css
-3. templates/E05.js
+แก้ไข:
+- ช่องผลิตภัณฑ์เป็น Dropdown
+- ช่องประเภท License เป็น Dropdown
+- ยังไม่ใส่ราคา
+- ไม่ต้องแก้ app.js หรือ style.css หากใช้เวอร์ชันล่าสุดจาก E04/E05 แล้ว
 
-ฟังก์ชัน:
-- Dynamic Subject
-- Dropdown เลือกสถานะคำสั่งซื้อ
-- Order Detail Card
-- Timeline เปลี่ยนตามสถานะ
-- ปุ่ม LINE OA แสดงเมื่อกรอกลิงก์
-- ไม่มีคำว่า “ขอแสดงความนับถือ”
-
-วิธีติดตั้ง:
+วิธีใช้:
 1. แตก ZIP
-2. อัปโหลดไฟล์ทั้งหมดไปทับไฟล์เดิมใน GitHub
+2. อัปโหลด templates/E05.js ไปทับไฟล์เดิม
 3. รอ GitHub Pages deploy
 4. Hard Refresh
-
-Mac: Command + Shift + R
-Windows: Ctrl + Shift + R
