@@ -8,6 +8,7 @@ window.PTCAD_TEMPLATES.push({
   active: true,
   subject: "PTCAD | ใบเสนอราคาสำหรับ {{CompanyName}}",
   attachment: "ใบเสนอราคา และรายละเอียดบัญชีธนาคาร",
+
   fields: [
     { key: "CustomerName", label: "ชื่อลูกค้า", default: "คุณลูกค้า", full: false },
     { key: "CompanyName", label: "ชื่อบริษัทลูกค้า", default: "บริษัทของท่าน", full: false },
@@ -32,20 +33,20 @@ window.PTCAD_TEMPLATES.push({
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>PTCAD Quotation</title>
 </head>
-<body style="margin:0;padding:0;background:#f4f8fc;font-family:'Noto Sans Thai',Arial,sans-serif;color:#22324a;">
+<body style="margin:0;padding:0;background:#f4f8fc;font-family:Arial,'Noto Sans Thai',sans-serif;color:#22324a;">
   <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background:#f4f8fc;padding:28px 12px;">
     <tr>
       <td align="center">
         <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="max-width:680px;background:#ffffff;border-radius:20px;overflow:hidden;box-shadow:0 16px 45px rgba(36,72,121,.12);">
           <tr>
-            <td align="center" style="padding:28px 24px 22px;background:linear-gradient(135deg,#eef6ff,#ffffff);border-bottom:1px solid #dce9f7;">
+            <td align="center" style="padding:28px 24px 22px;background:#eef6ff;border-bottom:1px solid #dce9f7;">
               <img src="https://pt-cad.com/wp-content/uploads/2025/06/cropped-PTCAD-Logo-Trademark-1-300x300.png" alt="PTCAD" width="82" style="display:block;width:82px;height:auto;margin:0 auto 10px;">
-              <div style="font-size:15px;color:#4773b5;letter-spacing:.2px;">ใช้งานง่าย • คุ้มค่า • พร้อมช่วยเหลือ</div>
+              <div style="font-size:15px;color:#4773b5;">ใช้งานง่าย • คุ้มค่า • พร้อมช่วยเหลือ</div>
             </td>
           </tr>
 
           <tr>
-            <td style="padding:34px 34px 16px;">
+            <td style="padding:34px;">
               <p style="margin:0 0 16px;font-size:18px;line-height:1.7;"><strong>เรียน ${v.CustomerName}</strong></p>
               <p style="margin:0 0 16px;font-size:17px;line-height:1.8;">สวัสดีค่ะ</p>
 
@@ -67,17 +68,14 @@ window.PTCAD_TEMPLATES.push({
                 </tr>
               </table>
 
-              <p style="margin:0 0 12px;font-size:17px;line-height:1.8;">ทางบริษัทได้แนบเอกสารประกอบการพิจารณามาพร้อมอีเมลฉบับนี้ ดังนี้</p>
+              <p style="margin:0 0 12px;font-size:17px;line-height:1.8;">
+                ทางบริษัทได้แนบเอกสารประกอบการพิจารณามาพร้อมอีเมลฉบับนี้ ดังนี้
+              </p>
 
-              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="margin:0 0 20px;">
-                <tr>
-                  <td style="padding:11px 14px;background:#fbfdff;border:1px solid #e2edf8;border-radius:10px;font-size:16px;">ใบเสนอราคาผลิตภัณฑ์ PTCAD</td>
-                </tr>
-                <tr><td style="height:8px;"></td></tr>
-                <tr>
-                  <td style="padding:11px 14px;background:#fbfdff;border:1px solid #e2edf8;border-radius:10px;font-size:16px;">รายละเอียดบัญชีธนาคารสำหรับการชำระเงิน</td>
-                </tr>
-              </table>
+              <ul style="margin:0 0 20px;padding-left:22px;font-size:16px;line-height:1.9;">
+                <li>ใบเสนอราคาผลิตภัณฑ์ PTCAD</li>
+                <li>รายละเอียดบัญชีธนาคารสำหรับการชำระเงิน</li>
+              </ul>
 
               <p style="margin:0 0 20px;font-size:17px;line-height:1.85;">
                 หากท่านประสงค์ยืนยันการสั่งซื้อ รบกวนลงนามในใบเสนอราคา
@@ -85,7 +83,10 @@ window.PTCAD_TEMPLATES.push({
                 เพื่อให้ทีมงานดำเนินการในขั้นตอนถัดไปค่ะ
               </p>
 
-              <div style="margin:24px 0 12px;font-size:18px;color:#18345c;font-weight:700;">เอกสารสำหรับยืนยันการสั่งซื้อ</div>
+              <div style="margin:24px 0 12px;font-size:18px;color:#18345c;font-weight:700;">
+                เอกสารสำหรับยืนยันการสั่งซื้อ
+              </div>
+
               <ol style="margin:0 0 22px;padding-left:24px;font-size:16px;line-height:1.9;">
                 <li>ใบเสนอราคาที่ลงนามยืนยันการสั่งซื้อ</li>
                 <li>หลักฐานการชำระเงิน</li>
@@ -95,7 +96,9 @@ window.PTCAD_TEMPLATES.push({
               <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="margin:22px 0;background:#eef6ff;border-left:4px solid #2d66d5;border-radius:12px;">
                 <tr>
                   <td style="padding:18px 20px;">
-                    <div style="font-size:17px;font-weight:700;color:#17449f;margin-bottom:8px;">ข้อมูลสำหรับออกหนังสือรับรองหักภาษี ณ ที่จ่าย</div>
+                    <div style="font-size:17px;font-weight:700;color:#17449f;margin-bottom:8px;">
+                      ข้อมูลสำหรับออกหนังสือรับรองหักภาษี ณ ที่จ่าย
+                    </div>
                     <div style="font-size:15px;line-height:1.75;color:#30445f;">
                       <strong>บริษัท แรบบิท โปร อินดัสเทรียส์ จำกัด</strong><br>
                       เลขที่ 103 หมู่ที่ 13 ตำบลบางพลีใหญ่<br>
@@ -119,12 +122,6 @@ window.PTCAD_TEMPLATES.push({
 
               <p style="margin:0 0 10px;font-size:17px;line-height:1.8;">ขอบคุณค่ะ</p>
               <p style="margin:0;font-size:17px;line-height:1.8;">ขอแสดงความนับถือ</p>
-            </td>
-          </tr>
-
-          <tr>
-            <td style="padding:18px 30px 24px;border-top:1px solid #e7eef7;color:#7d8ca0;font-size:13px;text-align:center;">
-              PTCAD — CAD ที่พร้อมช่วยให้การทำงานของคุณง่ายขึ้น
             </td>
           </tr>
         </table>
