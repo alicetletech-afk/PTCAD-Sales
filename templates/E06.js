@@ -13,7 +13,7 @@ window.PTCAD_TEMPLATES.push({
     { key: "CustomerName", label: "ชื่อลูกค้า", default: "คุณลูกค้า", full: false },
     { key: "CompanyName", label: "ชื่อบริษัทลูกค้า", default: "บริษัทของท่าน", full: false },
     { key: "QuotationNo", label: "เลขที่ใบเสนอราคา", default: "PAP-QXXXXX", full: false },
-    { key: "PaymentDate", label: "วันที่ได้รับชำระเงิน", default: "วันที่ เดือน ปี", full: false },
+    { key: "PaymentDate", label: "วันที่ได้รับชำระเงิน", type: "date", default: "", full: false },
 
     {
       key: "ProductName",
@@ -32,13 +32,11 @@ window.PTCAD_TEMPLATES.push({
       key: "LicenseType",
       label: "ประเภท License",
       type: "select",
-      default: "Subscription License",
+      default: "Subscription — เช่าใช้รายปี",
       full: false,
       options: [
-        { value: "Subscription License", label: "Subscription License" },
-        { value: "Perpetual License (ซื้อขาด)", label: "Perpetual License (ซื้อขาด)" },
-        { value: "Network License", label: "Network License" }
-      ]
+        { value: "Subscription — เช่าใช้รายปี", label: "Subscription — เช่าใช้รายปี" },
+        { value: "Perpetual — ซื้อขาด", label: "Perpetual — ซื้อขาด" },]
     },
 
     { key: "Quantity", label: "จำนวน License", default: "1 License", full: false },
@@ -82,7 +80,7 @@ window.PTCAD_TEMPLATES.push({
       QuotationNo: values.QuotationNo || "PAP-QXXXXX",
       PaymentDate: values.PaymentDate || "วันที่ เดือน ปี",
       ProductName: values.ProductName || "PTCAD Standard",
-      LicenseType: values.LicenseType || "Subscription License",
+      LicenseType: values.LicenseType || "Subscription — เช่าใช้รายปี",
       Quantity: values.Quantity || "1 License",
       Amount: values.Amount || "-",
       PaymentMethod: values.PaymentMethod || "โอนเงินผ่านธนาคาร",

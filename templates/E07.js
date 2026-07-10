@@ -30,19 +30,17 @@ window.PTCAD_TEMPLATES.push({
       key: "LicenseType",
       label: "ประเภท License",
       type: "select",
-      default: "Subscription License",
+      default: "Subscription — เช่าใช้รายปี",
       full: false,
       options: [
-        { value: "Subscription License", label: "Subscription License" },
-        { value: "Perpetual License (ซื้อขาด)", label: "Perpetual License (ซื้อขาด)" },
-        { value: "Network License", label: "Network License" }
-      ]
+        { value: "Subscription — เช่าใช้รายปี", label: "Subscription — เช่าใช้รายปี" },
+        { value: "Perpetual — ซื้อขาด", label: "Perpetual — ซื้อขาด" },]
     },
 
     { key: "LicenseKey", label: "License Key", default: "XXXX-XXXX-XXXX-XXXX", full: true },
     { key: "Quantity", label: "จำนวน License", default: "1 License", full: false },
-    { key: "StartDate", label: "วันที่เริ่มใช้งาน", default: "วันที่ เดือน ปี", full: false },
-    { key: "ExpireDate", label: "วันหมดอายุ", default: "วันที่ เดือน ปี", full: false },
+    { key: "StartDate", label: "วันที่เริ่มใช้งาน", type: "date", default: "", full: false },
+    { key: "ExpireDate", label: "วันหมดอายุ", type: "date", default: "", full: false },
 
     { key: "DownloadUrl", label: "ลิงก์ดาวน์โหลดโปรแกรม", default: "", full: true },
     { key: "InstallGuideUrl", label: "ลิงก์คู่มือติดตั้ง", default: "", full: true },
@@ -64,7 +62,7 @@ window.PTCAD_TEMPLATES.push({
       CustomerName: values.CustomerName || "คุณลูกค้า",
       CompanyName: values.CompanyName || "บริษัทของท่าน",
       ProductName: values.ProductName || "PTCAD Standard",
-      LicenseType: values.LicenseType || "Subscription License",
+      LicenseType: values.LicenseType || "Subscription — เช่าใช้รายปี",
       LicenseKey: values.LicenseKey || "XXXX-XXXX-XXXX-XXXX",
       Quantity: values.Quantity || "1 License",
       StartDate: values.StartDate || "วันที่ เดือน ปี",

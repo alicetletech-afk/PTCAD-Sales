@@ -30,16 +30,14 @@ window.PTCAD_TEMPLATES.push({
       key: "LicenseType",
       label: "ประเภท License",
       type: "select",
-      default: "Subscription License",
+      default: "Subscription — เช่าใช้รายปี",
       full: false,
       options: [
-        { value: "Subscription License", label: "Subscription License" },
-        { value: "Network License", label: "Network License" }
-      ]
+        { value: "Subscription — เช่าใช้รายปี", label: "Subscription — เช่าใช้รายปี" },]
     },
 
     { key: "LicenseNo", label: "เลขที่ License", default: "XXXX-XXXX-XXXX-XXXX", full: true },
-    { key: "ExpireDate", label: "วันที่หมดอายุ", default: "DD-MM-YYYY", full: false },
+    { key: "ExpireDate", label: "วันที่หมดอายุ", type: "date", default: "", full: false },
     { key: "Quantity", label: "จำนวน License", default: "1 License", full: false },
 
     {
@@ -60,7 +58,7 @@ window.PTCAD_TEMPLATES.push({
       CustomerName: values.CustomerName || "คุณลูกค้า",
       CompanyName: values.CompanyName || "บริษัทของท่าน",
       ProductName: values.ProductName || "PTCAD Standard",
-      LicenseType: values.LicenseType || "Subscription License",
+      LicenseType: values.LicenseType || "Subscription — เช่าใช้รายปี",
       LicenseNo: values.LicenseNo || "XXXX-XXXX-XXXX-XXXX",
       ExpireDate: values.ExpireDate || "DD-MM-YYYY",
       Quantity: values.Quantity || "1 License",
@@ -118,20 +116,20 @@ window.PTCAD_TEMPLATES.push({
             <td style="padding:34px;">
               <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:0 0 24px;background:linear-gradient(135deg,#fff4f4,#ffe3e3);border:1px solid #efb1b1;border-radius:16px;">
                 <tr>
-                  <td style="padding:24px 24px 22px;">
-                    <div style="display:inline-block;padding:6px 12px;border-radius:999px;background:#d9534f;color:#ffffff;font-size:12px;font-weight:700;letter-spacing:.08em;">
+                  <td style="padding:18px 20px 17px;">
+                    <div style="display:inline-block;padding:5px 10px;border-radius:999px;background:#d9534f;color:#ffffff;font-size:12px;font-weight:700;letter-spacing:.08em;">
                       LICENSE EXPIRED
                     </div>
 
-                    <div style="margin-top:16px;font-size:23px;line-height:1.35;font-weight:700;color:#8f2929;">
+                    <div style="margin-top:12px;font-size:21px;line-height:1.35;font-weight:700;color:#8f2929;">
                       License หมดอายุแล้ว
                     </div>
 
-                    <div style="margin-top:8px;font-size:17px;line-height:1.5;color:#a94442;">
+                    <div style="margin-top:6px;font-size:16px;line-height:1.5;color:#a94442;">
                       กรุณาดำเนินการต่ออายุเพื่อกลับมาใช้งานต่อ
                     </div>
 
-                    <div style="margin-top:12px;font-size:15px;line-height:1.75;color:#6d4f4f;">
+                    <div style="margin-top:8px;font-size:14px;line-height:1.75;color:#6d4f4f;">
                       ทีมงานสามารถช่วยตรวจสอบรายละเอียดและดำเนินการต่ออายุให้ได้ค่ะ
                     </div>
                   </td>

@@ -13,7 +13,7 @@ window.PTCAD_TEMPLATES.push({
     { key: "CustomerName", label: "ชื่อลูกค้า", default: "คุณลูกค้า", full: false },
     { key: "CompanyName", label: "ชื่อบริษัทลูกค้า", default: "บริษัทของท่าน", full: false },
     { key: "QuotationNo", label: "เลขที่ใบเสนอราคา", default: "PAP-QXXXXX", full: false },
-    { key: "QuotationDate", label: "วันที่ใบเสนอราคา", default: "วันที่ เดือน ปี", full: false },
+    { key: "QuotationDate", label: "วันที่ใบเสนอราคา", type: "date", default: "", full: false },
     { key: "SalesName", label: "ชื่อเซลล์", default: "เจ้าหน้าที่ฝ่ายขาย", full: true }
   ],
 

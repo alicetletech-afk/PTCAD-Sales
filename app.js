@@ -26,6 +26,65 @@
     subjectInput.value = renderSubject(current.subject, values);
   }
 
+
+  const PACKAGE_OPTIONS = {
+    subscription: {
+      value: "Subscription — เช่าใช้รายปี",
+      label: "Subscription — เช่าใช้รายปี"
+    },
+    perpetual: {
+      value: "Perpetual — ซื้อขาด",
+      label: "Perpetual — ซื้อขาด"
+    }
+  };
+
+  function getLicenseOptions(productName) {
+    if (productName === "PTCAD Lite") {
+      return [PACKAGE_OPTIONS.subscription];
+    }
+
+    return [
+      PACKAGE_OPTIONS.subscription,
+      PACKAGE_OPTIONS.perpetual
+    ];
+  }
+
+  function normalizeProductPackage() {
+    const hasProduct = current.fields.some(field => field.key === "ProductName");
+    const hasLicense = current.fields.some(field => field.key === "LicenseType");
+
+    if (!hasProduct || !hasLicense) return;
+
+    const validOptions = getLicenseOptions(values.ProductName);
+    const validValues = validOptions.map(option => option.value);
+
+    if (!validValues.includes(values.LicenseType)) {
+      values.LicenseType = PACKAGE_OPTIONS.subscription.value;
+
+      const licenseField = current.fields.find(field => field.key === "LicenseType");
+      if (licenseField) {
+        persistField(licenseField, values.LicenseType);
+      }
+    }
+  }
+
+  function formatDateForPreview(value) {
+    if (!value) return "—";
+
+    // Native date inputs store YYYY-MM-DD.
+    const match = String(value).match(/^(\d{4})-(\d{2})-(\d{2})$/);
+    if (match) {
+      return `${match[3]}-${match[2]}-${match[1]}`;
+    }
+
+    // Preserve an already formatted DD-MM-YYYY value.
+    if (/^\d{2}-\d{2}-\d{4}$/.test(String(value))) {
+      return String(value);
+    }
+
+    return String(value);
+  }
+
   function buildList() {
     list.innerHTML = '';
     templates.forEach(template => {
@@ -56,11 +115,19 @@
     current.fields.forEach(field => {
       const saved = localStorage.getItem(`ptcad_${current.id}_${field.key}`);
       if (saved !== null) {
-        values[field.key] = field.type === 'checkbox' ? saved === 'true' : saved;
+        if (field.type === 'checkbox') {
+          values[field.key] = saved === 'true';
+        } else if (field.type === 'date') {
+          values[field.key] = /^\d{4}-\d{2}-\d{2}$/.test(saved) ? saved : '';
+        } else {
+          values[field.key] = saved;
+        }
       } else {
         values[field.key] = field.default ?? (field.type === 'checkbox' ? false : '');
       }
     });
+
+    normalizeProductPackage();
 
     currentCode.textContent = `${current.id} · ${current.stage}`;
     currentTitle.textContent = current.title;
@@ -110,7 +177,11 @@
         label.textContent = field.label;
 
         const select = document.createElement('select');
-        (field.options || []).forEach(option => {
+        const selectOptions = field.key === "LicenseType"
+          ? getLicenseOptions(values.ProductName)
+          : (field.options || []);
+
+        selectOptions.forEach(option => {
           const item = document.createElement('option');
           item.value = option.value;
           item.textContent = option.label;
@@ -147,6 +218,10 @@
   }
 
   function handleFieldChange(key, value, rebuild = true) {
+    if (key === "ProductName") {
+      normalizeProductPackage();
+      rebuild = true;
+    }
     if (typeof current.onFieldChange === 'function') {
       const updatedValues = current.onFieldChange(key, value, {...values});
       if (updatedValues && typeof updatedValues === 'object') {
@@ -162,7 +237,15 @@
   }
 
   function refreshPreview() {
-    renderedHtml = current.render(values);
+    const previewValues = { ...values };
+
+    current.fields.forEach(field => {
+      if (field.type === 'date') {
+        previewValues[field.key] = formatDateForPreview(values[field.key]);
+      }
+    });
+
+    renderedHtml = current.render(previewValues);
     preview.srcdoc = renderedHtml;
   }
 

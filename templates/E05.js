@@ -32,13 +32,11 @@ window.PTCAD_TEMPLATES.push({
       key: "LicenseType",
       label: "ประเภท License",
       type: "select",
-      default: "Subscription License",
+      default: "Subscription — เช่าใช้รายปี",
       full: false,
       options: [
-        { value: "Subscription License", label: "Subscription License" },
-        { value: "Perpetual License (ซื้อขาด)", label: "Perpetual License (ซื้อขาด)" },
-        { value: "Network License", label: "Network License" }
-      ]
+        { value: "Subscription — เช่าใช้รายปี", label: "Subscription — เช่าใช้รายปี" },
+        { value: "Perpetual — ซื้อขาด", label: "Perpetual — ซื้อขาด" },]
     },
 
     { key: "Quantity", label: "จำนวน License", default: "1 License", full: false },
@@ -70,7 +68,7 @@ window.PTCAD_TEMPLATES.push({
       QuotationNo: values.QuotationNo || "PAP-QXXXXX",
       OrderNo: values.OrderNo || "-",
       ProductName: values.ProductName || "PTCAD Standard",
-      LicenseType: values.LicenseType || "Subscription License",
+      LicenseType: values.LicenseType || "Subscription — เช่าใช้รายปี",
       Quantity: values.Quantity || "1 License",
       OrderStatus: values.OrderStatus || "received",
       SalesName: values.SalesName || "เจ้าหน้าที่ฝ่ายขาย",
