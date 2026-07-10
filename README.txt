@@ -1,17 +1,22 @@
-PTCAD E07 — License Delivery Final
+PTCAD E08 — Renewal Reminder 30 Days
 
-อัปโหลดไฟล์:
-- templates/E07.js
+อัปโหลด:
+- templates/E08.js
 
-ไม่ต้องแก้ app.js หรือ style.css หากใช้เวอร์ชันล่าสุดจาก E04/E05 อยู่แล้ว
+ไม่ต้องแก้ app.js หรือ style.css หากใช้เวอร์ชันล่าสุดอยู่แล้ว
 
 ฟังก์ชัน:
 - Product Dropdown
 - License Type Dropdown
-- Perpetual แสดง “ไม่มีวันหมดอายุ” อัตโนมัติ
-- ช่อง License Key / วันที่เริ่ม / วันหมดอายุ
-- ปุ่ม Download / Installation Guide / Activate Guide / LINE / AI
-- Attachment Checklist
+- วันหมดอายุ
+- Checkbox แนบใบเสนอราคาต่ออายุ
+- CTA ขอใบเสนอราคา
+- CTA LINE OA
+- Dynamic Subject
 - ไม่มีคำว่า “ขอแสดงความนับถือ”
 
-หลังอัปโหลด รอ GitHub Pages deploy แล้ว Hard Refresh
+วิธีใช้:
+1. แตก ZIP
+2. อัปโหลด templates/E08.js ไปทับไฟล์เดิม
+3. รอ GitHub Pages deploy
+4. Hard Refresh
