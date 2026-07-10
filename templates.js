@@ -30,7 +30,7 @@ function escapeHtml(value = '') {
     .replaceAll("'", '&#039;');
 }
 
-function buildEmailHtml(data, logoSource = 'assets/ptcad-logo.png') {
+function buildEmailHtml(data, logoSource = 'assets/images/ptcad-logo.png') {
   const customer = escapeHtml(data.customerName || 'คุณลูกค้า');
   const sales = escapeHtml(data.salesName || 'ชื่อเซลล์');
   const companyLine = data.companyName

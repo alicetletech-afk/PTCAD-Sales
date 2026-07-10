@@ -1,33 +1,14 @@
-PTCAD Email Hub V1
-==================
+PTCAD Email Hub V1.1
 
-เปิดใช้งาน
+เปิดใช้งาน:
 1. แตกไฟล์ ZIP
-2. เปิด index.html ด้วย Chrome / Edge
-3. กรอกข้อมูลลูกค้าและชื่อเซลล์
-4. กด Copy Subject หรือ Copy Email
-5. นำไปวางใน Outlook / Gmail
-6. แนบ Company Profile PDF ก่อนส่ง
+2. เปิด index.html ด้วย Chrome หรือ Edge
 
-ฟังก์ชันที่มี
-- PTCAD Email Hub ดีไซน์ Glass / Blue-to-White Gradient
-- รายการเทมเพลต E01-E11
-- E01 Product Introduction พร้อมใช้งาน
-- Live Preview Desktop / Mobile
-- Copy Subject
-- Copy Email แบบ Rich HTML (เบราว์เซอร์ที่รองรับ)
-- Export HTML
-- บันทึกข้อมูลอัตโนมัติใน Local Storage
-- Responsive รองรับมือถือ
+ตำแหน่งรูป:
+- โลโก้หลัก: assets/images/ptcad-logo.png
+- รูปที่ต้องการเพิ่มเอง: assets/uploads/
 
-ไฟล์หลัก
-- index.html      หน้าเว็บ
-- style.css       ดีไซน์
-- templates.js   ข้อมูลเทมเพลตและ HTML Email
-- app.js          การทำงานของระบบ
-- assets/         โลโก้ PTCAD
-
-หมายเหตุ
-- เทมเพลต E02-E11 แสดงเป็นรายการเตรียมไว้ และจะเปิดใช้เมื่อเพิ่มข้อความแต่ละฉบับ
-- Signature ของเซลล์ให้ตั้งใน Outlook / Gmail เพื่อให้ต่อท้ายอัตโนมัติ
-- Export HTML ใช้ URL โลโก้จากเว็บไซต์ PTCAD เพื่อให้รูปแสดงเมื่อส่งออกไปใช้งาน
+สำคัญ:
+- อย่าเปลี่ยนชื่อโฟลเดอร์ assets
+- หากเปลี่ยนชื่อไฟล์โลโก้ ต้องแก้ path ใน index.html และ templates.js
+- ตอนนี้ E01 พร้อมใช้ ส่วน E02-E11 เป็นโครงรอใส่ข้อความ

@@ -59,7 +59,7 @@ function setData(data) {
 }
 
 function renderPreview() {
-  const html = buildEmailHtml(getData(), 'assets/ptcad-logo.png');
+  const html = buildEmailHtml(getData(), 'assets/images/ptcad-logo.png');
   els.preview.srcdoc = html;
   localStorage.setItem(STORAGE_KEY, JSON.stringify(getData()));
 }
@@ -87,7 +87,7 @@ async function copyText(text, successMessage) {
 }
 
 async function copyRichEmail() {
-  const html = buildEmailHtml(getData(), 'assets/ptcad-logo.png');
+  const html = buildEmailHtml(getData(), 'assets/images/ptcad-logo.png');
   const plain = els.preview.contentDocument?.body.innerText || '';
   try {
     if (window.ClipboardItem && navigator.clipboard?.write) {

@@ -1,0 +1,10 @@
+ใส่รูปเพิ่มเติมในโฟลเดอร์นี้ได้เลย เช่น
+- company-profile-cover.jpg
+- product-overview.png
+- promotion-banner.jpg
+
+เวลาเรียกใช้ใน HTML ให้ใช้ path:
+assets/uploads/ชื่อไฟล์รูป
+
+ตัวอย่าง:
+<img src="assets/uploads/company-profile-cover.jpg" alt="Company Profile">
