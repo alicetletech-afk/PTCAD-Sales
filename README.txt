@@ -1,14 +1,21 @@
-PTCAD Email Hub V1.1
+PTCAD EMAIL HUB — GitHub Pages Ready
 
-เปิดใช้งาน:
+วิธีอัปขึ้น GitHub
 1. แตกไฟล์ ZIP
-2. เปิด index.html ด้วย Chrome หรือ Edge
+2. เปิด Repository ที่ต้องการ
+3. ลากไฟล์และโฟลเดอร์ทั้งหมดภายใน PTCAD-Email-Hub-GitHub-V1 ขึ้นไปที่ Root ของ Repository
+4. Commit changes
+5. ไปที่ Settings > Pages
+6. Source: Deploy from a branch
+7. Branch: main / root แล้วกด Save
 
-ตำแหน่งรูป:
-- โลโก้หลัก: assets/images/ptcad-logo.png
-- รูปที่ต้องการเพิ่มเอง: assets/uploads/
+ไฟล์เทมเพลต
+- templates/E01.js พร้อมใช้งานแล้ว
+- templates/E02.js ถึง E11.js เป็นโครงรอเติมเนื้อหา
 
-สำคัญ:
-- อย่าเปลี่ยนชื่อโฟลเดอร์ assets
-- หากเปลี่ยนชื่อไฟล์โลโก้ ต้องแก้ path ใน index.html และ templates.js
-- ตอนนี้ E01 พร้อมใช้ ส่วน E02-E11 เป็นโครงรอใส่ข้อความ
+การแก้โลโก้
+- แทนที่ไฟล์ assets/images/ptcad-logo.png โดยใช้ชื่อเดิม
+
+หมายเหตุเรื่องรูปในอีเมล
+- Preview ในเว็บจะแสดงโลโก้จาก path ภายในโปรเจกต์
+- เมื่อนำ HTML ไปส่งจริงผ่านบางระบบ อาจต้องเปลี่ยน URL รูปเป็น URL แบบ public บน GitHub Pages หรือเว็บไซต์หลัก เพื่อให้ผู้รับเห็นรูปได้ครบ

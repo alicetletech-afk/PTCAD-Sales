@@ -1,153 +1,131 @@
-const els = {
-  templateList: document.getElementById('templateList'),
-  pageTitle: document.getElementById('pageTitle'),
-  subject: document.getElementById('subjectInput'),
-  customer: document.getElementById('customerName'),
-  sales: document.getElementById('salesName'),
-  company: document.getElementById('companyName'),
-  trial: document.getElementById('trialLink'),
-  info: document.getElementById('infoLink'),
-  preview: document.getElementById('emailPreview'),
-  viewport: document.getElementById('emailViewport'),
-  toast: document.getElementById('toast')
-};
+(() => {
+  const templates = window.PTCAD_TEMPLATES || {};
+  let activeId = "E01";
+  let activeValues = {};
+  let latestEmailHtml = "";
 
-const STORAGE_KEY = 'ptcad-email-hub-intro-v1';
-let activeTemplate = 'intro';
+  const listEl = document.getElementById("templateList");
+  const fieldsEl = document.getElementById("dynamicFields");
+  const subjectInput = document.getElementById("subjectInput");
+  const preview = document.getElementById("emailPreview");
+  const titleEl = document.getElementById("pageTitle");
+  const attachmentText = document.getElementById("attachmentText");
+  const toast = document.getElementById("toast");
 
-function renderTemplateList() {
-  els.templateList.innerHTML = TEMPLATE_CATALOG.map(item => `
-    <button class="template-item ${item.id === activeTemplate ? 'active' : ''} ${!item.ready ? 'locked' : ''}" data-id="${item.id}" type="button">
-      <span class="template-number">${item.code}</span>
-      <span class="template-copy"><strong>${item.title}</strong><small>${item.subtitle}</small></span>
-      <span class="status-dot"></span>
-    </button>
-  `).join('');
+  const orderedIds = Object.keys(templates).sort();
 
-  els.templateList.querySelectorAll('.template-item').forEach(button => {
-    button.addEventListener('click', () => {
-      const item = TEMPLATE_CATALOG.find(t => t.id === button.dataset.id);
-      if (!item.ready) {
-        showToast(`${item.code} เตรียมโครงไว้แล้ว กำลังรอข้อความฉบับถัดไป`);
-        return;
-      }
-      activeTemplate = item.id;
-      els.pageTitle.textContent = item.title;
-      renderTemplateList();
+  function renderTemplateList() {
+    listEl.innerHTML = orderedIds.map(id => {
+      const t = templates[id];
+      const ready = t.status === "ready";
+      return `
+        <button class="template-item ${id === activeId ? "active" : ""} ${ready ? "" : "disabled"}" data-id="${id}" type="button">
+          <span class="template-code">${id}</span>
+          <span class="template-copy"><strong>${t.title}</strong><span>${t.shortTitle}</span></span>
+          <span class="template-dot"></span>
+        </button>`;
+    }).join("");
+
+    listEl.querySelectorAll(".template-item").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const id = btn.dataset.id;
+        if (templates[id].status !== "ready") {
+          showToast(`${id} เตรียมไฟล์ไว้แล้ว รอเติมเนื้อหา`);
+          return;
+        }
+        activeId = id;
+        loadTemplate();
+      });
     });
-  });
-}
-
-function getData() {
-  return {
-    subject: els.subject.value.trim(),
-    customerName: els.customer.value.trim(),
-    salesName: els.sales.value.trim(),
-    companyName: els.company.value.trim(),
-    trialLink: els.trial.value.trim(),
-    infoLink: els.info.value.trim()
-  };
-}
-
-function setData(data) {
-  els.subject.value = data.subject ?? DEFAULT_DATA.subject;
-  els.customer.value = data.customerName ?? DEFAULT_DATA.customerName;
-  els.sales.value = data.salesName ?? DEFAULT_DATA.salesName;
-  els.company.value = data.companyName ?? DEFAULT_DATA.companyName;
-  els.trial.value = data.trialLink ?? DEFAULT_DATA.trialLink;
-  els.info.value = data.infoLink ?? DEFAULT_DATA.infoLink;
-}
-
-function renderPreview() {
-  const html = buildEmailHtml(getData(), 'assets/images/ptcad-logo.png');
-  els.preview.srcdoc = html;
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(getData()));
-}
-
-function showToast(message) {
-  els.toast.textContent = message;
-  els.toast.classList.add('show');
-  clearTimeout(showToast.timer);
-  showToast.timer = setTimeout(() => els.toast.classList.remove('show'), 2200);
-}
-
-async function copyText(text, successMessage) {
-  try {
-    await navigator.clipboard.writeText(text);
-    showToast(successMessage);
-  } catch (error) {
-    const textarea = document.createElement('textarea');
-    textarea.value = text;
-    document.body.appendChild(textarea);
-    textarea.select();
-    document.execCommand('copy');
-    textarea.remove();
-    showToast(successMessage);
   }
-}
 
-async function copyRichEmail() {
-  const html = buildEmailHtml(getData(), 'assets/images/ptcad-logo.png');
-  const plain = els.preview.contentDocument?.body.innerText || '';
-  try {
-    if (window.ClipboardItem && navigator.clipboard?.write) {
+  function loadTemplate() {
+    const t = templates[activeId];
+    activeValues = Object.fromEntries((t.fields || []).map(field => [field.key, localStorage.getItem(`ptcad-${activeId}-${field.key}`) || field.defaultValue || ""]));
+    subjectInput.value = localStorage.getItem(`ptcad-${activeId}-subject`) || t.subject;
+    titleEl.textContent = `${t.id} · ${t.title}`;
+    attachmentText.textContent = t.attachments?.length ? t.attachments.join(", ") : "ไม่มีไฟล์แนบเริ่มต้น";
+    renderFields(t);
+    renderTemplateList();
+    updatePreview();
+  }
+
+  function renderFields(t) {
+    fieldsEl.innerHTML = (t.fields || []).map(field => `
+      <div class="field-group ${field.fullWidth ? "full-width" : ""}">
+        <label for="field-${field.key}">${field.label}</label>
+        <input id="field-${field.key}" data-key="${field.key}" type="text" value="${escapeAttribute(activeValues[field.key])}">
+      </div>`).join("");
+
+    fieldsEl.querySelectorAll("input").forEach(input => {
+      input.addEventListener("input", () => {
+        activeValues[input.dataset.key] = input.value;
+        localStorage.setItem(`ptcad-${activeId}-${input.dataset.key}`, input.value);
+        updatePreview();
+      });
+    });
+  }
+
+  function updatePreview() {
+    const t = templates[activeId];
+    latestEmailHtml = t.buildEmail(activeValues);
+    preview.srcdoc = latestEmailHtml;
+  }
+
+  function escapeAttribute(value) {
+    return String(value ?? "").replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  }
+
+  function showToast(message) {
+    toast.textContent = message;
+    toast.classList.add("show");
+    clearTimeout(showToast.timer);
+    showToast.timer = setTimeout(() => toast.classList.remove("show"), 2200);
+  }
+
+  subjectInput.addEventListener("input", () => {
+    localStorage.setItem(`ptcad-${activeId}-subject`, subjectInput.value);
+  });
+
+  document.getElementById("copySubjectBtn").addEventListener("click", async () => {
+    await navigator.clipboard.writeText(subjectInput.value);
+    showToast("คัดลอกหัวข้ออีเมลแล้ว");
+  });
+
+  document.getElementById("copyEmailBtn").addEventListener("click", async () => {
+    try {
+      const plainText = preview.contentDocument?.body?.innerText || "";
       const item = new ClipboardItem({
-        'text/html': new Blob([html], { type: 'text/html' }),
-        'text/plain': new Blob([plain], { type: 'text/plain' })
+        "text/html": new Blob([latestEmailHtml], { type: "text/html" }),
+        "text/plain": new Blob([plainText], { type: "text/plain" })
       });
       await navigator.clipboard.write([item]);
-      showToast('คัดลอกอีเมลแบบจัดรูปแบบแล้ว');
-    } else {
-      await copyText(plain, 'คัดลอกข้อความอีเมลแล้ว');
+      showToast("คัดลอกอีเมลแบบจัดรูปแบบแล้ว");
+    } catch (error) {
+      await navigator.clipboard.writeText(preview.contentDocument?.body?.innerText || "");
+      showToast("คัดลอกข้อความอีเมลแล้ว");
     }
-  } catch (error) {
-    await copyText(plain, 'คัดลอกข้อความอีเมลแล้ว');
-  }
-}
-
-function exportHtml() {
-  const html = buildEmailHtml(getData(), 'https://pt-cad.com/wp-content/uploads/2025/06/cropped-PTCAD-Logo-Trademark-1-300x300.png');
-  const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = 'PTCAD-E01-Product-Introduction.html';
-  document.body.appendChild(a);
-  a.click();
-  a.remove();
-  URL.revokeObjectURL(url);
-  showToast('Export HTML เรียบร้อย');
-}
-
-function resetData() {
-  localStorage.removeItem(STORAGE_KEY);
-  setData(DEFAULT_DATA);
-  renderPreview();
-  showToast('รีเซ็ตข้อมูลแล้ว');
-}
-
-function init() {
-  renderTemplateList();
-  const saved = localStorage.getItem(STORAGE_KEY);
-  setData(saved ? { ...DEFAULT_DATA, ...JSON.parse(saved) } : DEFAULT_DATA);
-  renderPreview();
-
-  [els.subject, els.customer, els.sales, els.company, els.trial, els.info].forEach(input => {
-    input.addEventListener('input', renderPreview);
   });
 
-  document.getElementById('copySubjectBtn').addEventListener('click', () => copyText(els.subject.value, 'คัดลอก Subject แล้ว'));
-  document.getElementById('copyEmailBtn').addEventListener('click', copyRichEmail);
-  document.getElementById('exportBtn').addEventListener('click', exportHtml);
-  document.getElementById('resetBtn').addEventListener('click', resetData);
+  document.getElementById("exportBtn").addEventListener("click", () => {
+    const blob = new Blob([latestEmailHtml], { type: "text/html;charset=utf-8" });
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = `${activeId}-PTCAD-email.html`;
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    URL.revokeObjectURL(link.href);
+    showToast("Export HTML เรียบร้อย");
+  });
 
-  document.querySelectorAll('.icon-btn').forEach(button => {
-    button.addEventListener('click', () => {
-      document.querySelectorAll('.icon-btn').forEach(btn => btn.classList.remove('active'));
-      button.classList.add('active');
-      els.viewport.className = `email-viewport ${button.dataset.width}`;
+  document.querySelectorAll(".device-button").forEach(button => {
+    button.addEventListener("click", () => {
+      document.querySelectorAll(".device-button").forEach(btn => btn.classList.remove("active"));
+      button.classList.add("active");
+      preview.classList.toggle("mobile", button.dataset.width === "mobile");
     });
   });
-}
 
-document.addEventListener('DOMContentLoaded', init);
+  loadTemplate();
+})();
